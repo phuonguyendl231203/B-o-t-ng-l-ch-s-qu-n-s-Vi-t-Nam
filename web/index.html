@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<script>
+  // Màn Nova 1920x1080 density 560 -> WebView chỉ ~548px CSS. Ép khung cố định 1280px (ngang).
+  if (window.NovaNative) document.querySelector('meta[name=viewport]').setAttribute('content', 'width=1280, user-scalable=no');
+</script>
+<meta name="robots" content="noindex, nofollow">
+<title>Nova · Mạch nguồn văn hoá quân sự Việt Nam</title>
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body class="at-home">
+<div id="app">
+  <header class="topbar">
+    <div class="star">★</div>
+    <div class="ttl"><b id="hdrTitle">Mạch nguồn văn hoá quân sự Việt Nam</b><span>Bảo tàng Lịch sử Quân sự Việt Nam</span></div>
+    <button class="tbtn" id="btnHome"><span class="ic">⌂</span>Trang chủ</button>
+  </header>
+
+  <main>
+    <!-- ============ TRANG CHỦ ============ -->
+    <section class="screen on" id="s-home">
+      <div class="kv"><img src="img/keyvisual.jpg" alt=""></div>
+      <div class="home-r">
+        <div class="hero">
+          <small id="evOrg"></small>
+          <b id="evMuseum"></b>
+          <h1 id="evTitle"></h1>
+          <p id="evSub"></p>
+        </div>
+        <div class="tiles">
+          <button class="tile" data-go="nav"><span class="ico">🧭</span><h2>Dẫn đường</h2><p>Nova dẫn Quý khách tới từng tư liệu</p></button>
+          <button class="tile" data-go="ai"><span class="ico">🎙️</span><h2>Giao tiếp AI</h2><p>Hỏi về lịch sử, văn hoá, du lịch Việt Nam</p></button>
+          <button class="tile" data-go="quiz"><span class="ico">❓</span><h2>Hỏi đáp</h2><p>25 câu hỏi lịch sử quân sự</p></button>
+          <button class="tile" data-go="docs"><span class="ico">📜</span><h2>Xem tư liệu</h2><p>5 hiện vật tiêu biểu</p></button>
+        </div>
+        <div class="ribbon" id="ribbon"></div>
+      </div>
+    </section>
+
+    <!-- ============ DẪN ĐƯỜNG ============ -->
+    <section class="screen" id="s-nav">
+      <div class="nav-grid" id="navGrid"></div>
+      <div class="nav-info panel">
+        <div class="ni-row"><b>Điểm trên bản đồ:</b><span id="ptsList" class="pts"></span><button class="btn sm" id="btnReload">Đọc lại bản đồ</button></div>
+        <div class="ni-msg" id="navMsg"></div>
+      </div>
+    </section>
+
+    <!-- ============ GIAO TIẾP AI ============ -->
+    <section class="screen" id="s-ai">
+      <div class="ai-left panel">
+        <div class="orb" id="orb"><div class="ring"></div><div class="ring r2"></div><div class="face"><i></i><i></i></div></div>
+        <div class="ai-status" id="aiStatus"></div>
+        <button class="mic" id="btnMic"><span class="mi">🎤</span><span id="micLbl">Bấm để hỏi</span></button>
+        <div class="heard" id="heardLive"></div>
+        <div class="scope"><b>Nova trả lời về:</b> lịch sử, văn hoá, du lịch Việt Nam<br><b>Dựa trên:</b> tư liệu Bảo tàng · AI OrionStar của robot</div>
+      </div>
+      <div class="ai-right">
+        <div class="chat panel" id="chat"></div>
+        <div class="chips" id="chips"></div>
+      </div>
+    </section>
+
+    <!-- ============ HỎI ĐÁP (TRẮC NGHIỆM) ============ -->
+    <section class="screen" id="s-quiz">
+      <div class="qz-nums" id="qzNums"></div>
+      <div class="quiz panel" id="quiz"></div>
+    </section>
+
+    <!-- ============ XEM TƯ LIỆU ============ -->
+    <section class="screen" id="s-docs">
+      <div class="docs-list" id="docsList"></div>
+      <div class="doc-view" id="docView">
+        <button class="doc-img" id="docImg" aria-label="Phóng to"><img alt=""><span class="zoom">🔍 Chạm để phóng to</span></button>
+        <div class="doc-body panel">
+          <div class="doc-head"><small id="docNo"></small><h1 id="docTitle"></h1></div>
+          <div class="doc-text" id="docText"></div>
+          <div class="doc-btns">
+            <button class="btn" id="docBack">‹ Tư liệu khác</button>
+            <button class="btn gold" id="docRead">🔊 Nova thuyết minh</button>
+            <button class="btn red" id="docGo">🧭 Dẫn tôi tới đây</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Lớp phủ khi robot đang di chuyển: chạm bất kỳ đâu để dừng -->
+  <div class="moving" id="moving">
+    <div class="mv-box">
+      <img class="mv-img" id="mvImg" alt="">
+      <div class="mv-r">
+        <h1 id="mvTitle"></h1>
+        <p class="mv-status" id="mvStatus"></p>
+        <div class="mv-cap" id="mvCap"></div>
+        <button class="stop" id="btnStop">■  DỪNG</button>
+        <p class="mv-hint">Chạm bất kỳ đâu trên màn hình để dừng robot</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="lightbox" id="lightbox"><img alt=""><span>Chạm để đóng</span></div>
+  <div class="modal" id="modal"><div class="mbox panel"><p id="mText"></p><div class="mbtns"><button class="btn" id="mNo">Không</button><button class="btn gold" id="mYes">Đồng ý</button></div></div></div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/tulieu.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/bridge.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
